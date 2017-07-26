@@ -1,0 +1,20 @@
+/******************* FORMS **********************************************************************************************/
+.form-group {
+    padding: 20px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    margin-bottom: 20px;
+}
+
+.form-group-ext {
+    border: 1px solid lightgrey;
+    background-color: #F2F2F2;
+    border-radius: 1%;
+}
+
+.alert-grey {
+    background-color: #E6E6E6;
+    border-color: #F2F2F2;
+    color: #6E6E6E;
+}

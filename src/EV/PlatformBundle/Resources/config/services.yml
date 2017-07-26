@@ -1,0 +1,41 @@
+services:
+    ev_platform.beta.html_adder:
+        class: EV\PlatformBundle\Beta\BetaHTMLAdder
+
+    ev_platform.beta.listener:
+        class: EV\PlatformBundle\Beta\BetaListener
+        arguments:
+            - "@ev_platform.beta.html_adder"
+            - "2017-07-30"
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: processBeta }
+
+    ev_platform.antispam:
+        class: EV\PlatformBundle\Antispam\EVAntispam
+        arguments:
+            - "@mailer"
+            - %locale%
+            - 50
+
+    ev_platform.email.application_mailer:
+        class: EV\PlatformBundle\Email\ApplicationMailer
+        arguments:
+            - "@mailer"
+
+    ev_platform.doctrine_listener.application_creation:
+        class: EV\PlatformBundle\DoctrineListener\ApplicationCreationListener
+        arguments:
+            - "@ev_platform.email.application_mailer"
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
+    ev_platform.purger.advert:
+        class: EV\PlatformBundle\Purger\AdvertPurger
+        arguments:
+            - "@doctrine.orm.entity_manager"
+
+#    ev_platform.validator.antiflood:                                    # nom du service
+#        class: EV\PlatformBundle\Validator\AntifloodValidator           # classe du service
+#        arguments: ["@request_stack", "@doctrine.orm.entity_manager"]   # données injectées au service (requête et EntityManager)
+#        tags:
+#            - { name: validator.constraint_validator, alias: ev_platform_antiflood }    # alias permettant de retrouver le service

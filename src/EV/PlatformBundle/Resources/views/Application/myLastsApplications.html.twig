@@ -1,0 +1,18 @@
+{% if listApplications|length > 0 %}
+    <ul>
+        {% for application in listApplications %}
+            <li>
+                <a href="{{ path('ev_platform_readApplication', {'idadvert': application.advert.id, 'id': application.id}) }}">
+                    CA{{ application.date | date ('Ym') }}{{ application.advert.id }}{{ application.id }}
+                </a>
+                par {{ application.firstName }} {{ application.lastName }},
+                le {{ application.date|date('d/m/Y') }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+    <div role="alert">
+        Vous n'avez encore reçu aucune candidature.
+    </div>
+{% endif %}

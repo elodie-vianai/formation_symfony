@@ -1,0 +1,76 @@
+.padding-top-3 {
+    padding-top: 3%;
+}
+
+.padding-bottom-5 {
+    padding-bottom: 5%;
+}
+
+.text-underline-hover :hover{
+    text-decoration: underline;
+}
+
+.user-anonym-item{
+    padding: 10px 20px 0 20px;
+    display: inline-block;
+    text-align: right;
+    list-style-type: none;
+}
+.user-item{
+    padding: 10px 15px 10px 0;
+    display: inline-block;
+    text-align: right;
+    list-style-type: none;
+}
+.user-item a {
+    text-decoration: underline;
+}
+/******************* FORMS **********************************************************************************************/
+.form-group {
+    padding: 20px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    margin-bottom: 20px;
+}
+
+.form-group-ext {
+    border: 1px solid lightgrey;
+    background-color: #F2F2F2;
+    border-radius: 1%;
+}
+
+.alert-grey {
+    background-color: #E6E6E6;
+    border-color: #F2F2F2;
+    color: #6E6E6E;
+}
+/******************* VIEW PAGES *****************************************************************************************/
+.logo-advert {
+    width: 100px;
+}
+
+.text-zone {
+    padding: 15px 10px 10px 5px;
+    margin: 30px 0 30px 0;
+    /*background-color: #E6E3E3;*/
+    border: 1px solid black;
+    min-height: 100px;
+}
+
+.applications-zone {
+    margin-top: 50px;
+}
+
+.category {
+    color: darkgrey;
+    justify-content: space-between;
+}
+
+
+/******************* VIEW APPLICATIONS **********************************************************************************/
+div h5 {
+    text-decoration: underline;
+}
+
+

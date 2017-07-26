@@ -1,0 +1,71 @@
+
+<link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+
+{{ form_start(form) }}
+
+
+<div class="alert alert-grey">
+    <div class="form-group">
+        <label><h4>Annonce sur laquelle vous candidatez</h4></label>
+        <br>
+        <div class="row">
+            <div class="col-6">
+                <strong>Titre de l'annonce :</strong> {{ advert.title }}
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <strong>Référence :</strong> AN{{ advert.date | date ('Ym') }}-{{ advert.id }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <strong>Auteur :</strong> {{ advert.user.username }}
+            </div>
+            <div class="col-1"></div>
+            <div class="col-5">
+                <strong>Date de publication :</strong> {{ advert.date | date('d-m-Y') }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="form-group">
+    <h4><label>Informations sur le candidat</label></h4>
+    <br>
+    <div class="row">
+        <div class="col-1">
+            {{ form_label(form.last_name, 'Nom',  {'label_attr': {'class': 'control-label'} }) }}
+        </div>
+        <div class="col-4">
+            {{ form_widget(form.last_name) }}
+        </div>
+        <div class="col-2"></div>
+        <div class="col-1">
+            {{ form_label(form.first_name, 'Prénom',  {'label_attr': {'class': 'control-label'} }) }}
+        </div>
+        <div class="col-4">
+            {{ form_widget(form.first_name) }}
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <h4><label>Lettre de motivation</label></h4>
+    <br>
+    {{ form_label(form.content, 'Votre texte ici :',  {'label_attr': {'class': 'control-label'} }) }}
+    {{ form_widget(form.content) }}
+</div>
+
+<div class="alert alert-info">
+    <strong>Attention :</strong> cette candidature sera directementenvoyée après validation du
+    formulaire et vous ne pourrez plus la modifier.
+</div>
+
+<div class="form-group text-center">
+    {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
+    {{ form_widget(form.annuler, {'attr': {'class': 'btn btn-danger'}}) }}
+</div>
+
+    {# Fin du formulaire#}
+    {{ form_end(form) }}

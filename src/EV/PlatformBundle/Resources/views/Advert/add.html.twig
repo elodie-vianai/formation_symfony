@@ -1,0 +1,22 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Ajouter une annonce
+{% endblock %}
+
+{% block evplatform_body %}
+    <h2>Ajouter une annonce</h2>
+
+    {{ include("EVPlatformBundle:Advert:form.html.twig") }}
+
+    <div class="alert alert-info">
+        <strong>Attention :</strong> cette annonce sera ajoutée directement
+        sur la page d'accueil après validation du formulaire.
+    </div>
+
+    <p class="text-right">
+        <a href="{{ path('ev_platform_dashboard') }}" class="btn btn-primary">
+            Retour à l'accueil
+        </a>
+    </p>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/platform.css') }}">
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} - Lecture d'une candidature
+{% endblock %}
+
+{% block subtitle %}
+    {% if is_granted('ROLE_CANDIDATE') %}
+        <h1>Candidature envoyée</h1>
+    {% else %}
+        <h1>Candidatures reçue</h1>
+    {% endif %}
+{% endblock %}
+
+{% block evplatform_body %}
+    <div class="row">
+        <div class="col-4">
+            <a class="btn btn-warning" href="{{ path('ev_platform_list_all_applications') }}">
+                <i class="fa fa-angle-left"></i>
+                Retour à la liste
+            </a>
+        </div>
+        <div class="col-4"></div>
+        {% if is_granted('ROLE_CANDIDATE') %}
+            <div class="col-4">
+                <a href="#" class="btn btn-danger text-right">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    Supprimer ma candidature
+                </a>
+            </div>
+        {% elseif (is_granted('ROLE_COMPANY')) or (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_SUPER_AMDIN')) %}
+            <div class="col-4">
+                <a href="#" class="btn btn-danger text-right">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    Supprimer la candidature
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="text-center">
+        <h3>Candidature n°CA{{ application.date | date ('Ym') }}{{ application.advert.id }}{{ application.id }}</h3>
+    </div>
+
+    <div class="text-center">
+        <i>
+            Annonce "{{ application.advert.title }}"
+            (<a href="{{ path('ev_platform_view_advert', {'id': application.advert.id}) }}" class="text-underline-hover">
+                n°{{ application.advert.id }}
+            </a>)
+        </i>
+    </div>
+
+    <div class="padding-top-3">
+        <h5>Candidat</h5>
+    </div>
+    <div class="row">
+        <div class="col-2"><strong>Prénom :</strong></div>
+        <div class="col">{{ application.firstName }}</div>
+        <div class="col-2"><strong>Nom :</strong></div>
+        <div class="col">{{ application.lastName | upper }}</div>
+    </div>
+
+    <div class="padding-top-3">
+        <h5>Message</h5>
+    </div>
+    <div class="row">
+        <div class="col">
+            <i>{{ application.content | raw }}</i>
+        </div>
+    </div>
+
+    <div class="padding-top-3">
+        <h5>Informations sur la candidature</h5>
+    </div>
+    <div class="row padding-bottom-5">
+        <div class="col-3">Date de dépôt :</div>
+        <div class="col">{{ application.date | date ('d-m-Y', 'Europe/Paris') }}</div>
+        <div class="col-3">Heure de dépôt :</div>
+        <div class="col">{{ application.date | date ('H:i', 'Europe/Paris') }}</div>
+    </div>
+{% endblock %}

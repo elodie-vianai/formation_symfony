@@ -1,0 +1,90 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+
+{% block title %}
+    ELVI - Toutes les candidatures
+{% endblock %}
+
+
+{% block subtitle %}
+    {% if is_granted('ROLE_COMPANY') %}
+        <h1>Candidatures reçues</h1>
+    {% elseif is_granted('ROLE_CANDIDATE') %}
+        <h1>Mes candidatures envoyées</h1>
+    {% else %}
+        <h1>Toutes les candidatures</h1>
+    {% endif %}
+{% endblock %}
+
+
+{% block evplatform_body %}
+    {% if is_granted('ROLE_CANDIDATE') %}
+        <table class="table">
+        <thead>
+        <tr>
+            <th>Référence candidature</th>
+            <th>Titre annonce</th>
+            <th>Référence annonce</th>
+            <th>Date d'envoi</th>
+            <th>Lire</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for application in listApplications %}
+            <tr>
+                <td>CA{{ application.date | date ('Ym') }}{{ application.advert.id }}{{ application.id }}</td>
+                <td><i><a href="{{ path('ev_platform_view_advert', {'id': application.advert.id}) }}" class="nav-link text-underline-hover">{{ application.advert.title }}</a></i></td>
+                <td><a href="{{ path('ev_platform_view_advert', {'id': application.advert.id}) }}" class="text-underline-hover">AN{{ application.advert.date | date ('Ym') }}-{{ application.advert.id }}</a></td>
+                <td>{{ application.date | date ('d/m/Y') }} à {{ application.date | date ('H:i') }}</td>
+                <td>
+                    <a href="{{ path ('ev_platform_readApplication', {'idadvert': application.advert.id, 'id': application.id}) }}" class="btn">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+    {% else %}
+        {% if listApplications > 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de réception</th>
+                    <th>Référence annonce</th>
+                    <th>Gestion</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for application in listApplications %}
+                    <tr>
+                        <td>CA{{ application.date | date ('Ym') }}{{ application.advert.id }}{{ application.id }}</td>
+                        <td>{{ application.lastName | upper }}</td>
+                        <td>{{ application.firstName }}</td>
+                        <td>
+                            {{ application.date | date ('d/m/Y') }} à {{ application.date | date ('H:i') }}
+                        </td>
+                        <td>
+                            <a href="{{ path('ev_platform_view_advert', {'id': application.advert.id}) }}" class="nav-link text-underline-hover">
+                                AN{{ application.advert.date | date ('Ym') }}-{{ application.advert.id }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path ('ev_platform_readApplication', {'idadvert': application.advert.id, 'id': application.id}) }}" class="btn">
+                                <i class="fa fa-book" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div role="alert">
+                Vous n'avez reçu encore aucune annonce.
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

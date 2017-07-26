@@ -1,0 +1,126 @@
+{# Cette vue n'hérite de personne, elle sera incluse par d'autres vues qui,
+   elles, hériteront probablement du layout. Je dis « probablement » car,
+   ici pour cette vue, on n'en sait rien et c'est une info qui ne nous concerne pas. #}
+<link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+{# On laisse vide la vue pour l'instant, on la comblera plus tard
+   lorsqu'on saura afficher un formulaire. #}
+    {{ form_start(form) }}
+
+<div class="form-group">
+    <label><strong>Généralités</strong></label>
+    <br>
+    {{ form_label(form.title, 'Titre de l\'annonce ',  {'label_attr': {'class': 'control-label'} }) }}
+    {{ form_widget(form.title) }}
+
+</div>
+
+<div class="form-group">
+    <label><strong>Informations concernant l'annonce</strong></label>
+    <br>
+    {{ form_label(form.description, 'Description de l\'annonce', {'label_attr': {'class': 'control-label'} }) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': '10'} }) }}
+
+    {{ form_label(form.profile, 'Profil requis', {'attr': {'class': 'control-label'} }) }}
+    {{ form_widget(form.profile, {'attr': {'class': 'form-control', 'rows': '5'} }) }}
+
+    {{ form_label(form.details, 'Autres informations', {'label_attr': {'class': 'control-label'} }) }}
+    {{ form_widget(form.details, {'attr': {'class': 'form-control', 'rows': '5'} }) }}
+</div>
+
+<div class="form-group form-group-ext">
+    <strong>{{ form_label(form.image, 'Logo') }}</strong>
+    {{ form_widget(form.image) }}
+</div>
+
+<div class="form-group form-group-ext">
+    <strong>{{ form_label(form.categories, 'Catégories', {'attr': {'class': 'control-label'}}) }}</strong>
+    {{ form_widget(form.categories) }}
+    <a href="#" id="add_category" class="btn btn-default">Ajouter une catégorie</a>
+</div>
+
+{% if form.published is defined %}
+    <div class="form-group">
+        {{ form_widget(form.published, {'label': 'Publier'}) }}
+    </div>
+{% endif %}
+
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}, 'label': 'Enregistrer' }) }}
+
+    {# Génération des champs restants du formulaire, dont le CSRF qui est une sécurité Symfony #}
+    {{ form_rest(form) }}
+
+    {# Fin du formulaire#}
+    {{ form_end(form) }}
+
+
+    {# Voici le script JQuery : #}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Récupération de la balise <div> contenant l'attribut « data-prototype »
+        var $container = $('div#ev_platformbundle_advert_categories');
+
+        // Définition d'un compteur unique pour nommer les champs qui seront ajoutés dynamiquement
+        var index = $container.find(':input').length;
+
+        // Ajout d'un nouveau champ à chaque clic sur le lien d'ajout.
+        $('#add_category').click(function(e) {
+            addCategory($container);
+
+            e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+            return false;
+        });
+
+        // Ajout d'un premier champ automatiquement s'il n'en existe pas déjà un (cas d'une nouvelle annonce par exemple).
+        if (index == 0) {
+            addCategory($container);
+        } else {
+            // S'il existe déjà des catégories, on ajoute un lien de suppression pour chacune d'entre elles
+            $container.children('div').each(function() {
+                addDeleteLink($(this));
+            });
+        }
+
+        // La fonction qui ajoute un formulaire CategoryType
+        function addCategory($container) {
+            // Dans le contenu de l'attribut « data-prototype », on remplace :
+            // - le texte "__name__label__" qu'il contient par le label du champ
+            // - le texte "__name__" qu'il contient par le numéro du champ
+            var template = $container.attr('data-prototype')
+                .replace(/__name__label__/g, 'Catégorie n°' + (index+1))
+                .replace(/__name__/g,        index)
+            ;
+
+            // Création d'un objet jquery qui contient ce template
+            var $prototype = $(template);
+
+            // Ajout d'un lien au prototype pour pouvoir supprimer la catégorie
+            addDeleteLink($prototype);
+
+            // Ajout du prototype modifié à la fin de la balise <div>
+            $container.append($prototype);
+
+            // Incrémentation du compteur pour que le prochain ajout se fasse avec un autre numéro
+            index++;
+        }
+
+        // La fonction qui ajoute un lien de suppression d'une catégorie
+        function addDeleteLink($prototype) {
+            // Création du lien
+            var $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+            // Ajout du lien
+            $prototype.append($deleteLink);
+
+            // Ajout du listener sur le clic du lien pour effectivement supprimer la catégorie
+            $deleteLink.click(function(e) {
+                $prototype.remove();
+
+                e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+                return false;
+            });
+        }
+    });
+</script>

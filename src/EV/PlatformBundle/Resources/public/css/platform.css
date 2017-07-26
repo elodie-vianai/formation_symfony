@@ -1,0 +1,29 @@
+/******************* VIEW PAGES *****************************************************************************************/
+.logo-advert {
+    width: 100px;
+}
+
+.text-zone {
+    padding: 15px 10px 10px 5px;
+    margin: 30px 0 30px 0;
+    /*background-color: #E6E3E3;*/
+    border: 1px solid black;
+    min-height: 100px;
+}
+
+.applications-zone {
+    margin-top: 50px;
+}
+
+.category {
+    color: darkgrey;
+    justify-content: space-between;
+}
+
+
+/******************* VIEW APPLICATIONS **********************************************************************************/
+div h5 {
+    text-decoration: underline;
+}
+
+

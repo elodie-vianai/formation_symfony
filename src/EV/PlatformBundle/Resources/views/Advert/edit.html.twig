@@ -1,0 +1,25 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Modifier une annonce
+{% endblock %}
+
+{% block evplatform_body %}
+
+    <h2>Modifier une annonce</h2>
+
+    {{ include("EVPlatformBundle:Advert:form.html.twig") }}
+
+    <p>
+        Vous éditez une annonce déjà existante, merci de ne pas changer
+        l'esprit général de l'annonce déjà publiée.
+    </p>
+
+    <p>
+        <a href="{{ path('ev_platform_view_advert', {'id': advert.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour à l'annonce
+        </a>
+    </p>
+
+{% endblock %}

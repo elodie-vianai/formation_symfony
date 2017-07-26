@@ -1,0 +1,142 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/platform.css') }}">
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} - Lecture d'une annonce
+{% endblock %}
+
+{% block subtitle %}
+    {% if is_granted('ROLE_COMPANY') %}
+        <h1>Mon annonce</h1>
+    {% else %}
+        <h1>Annonce n°{{ advert.id }}</h1>
+    {% endif %}
+{% endblock %}
+
+{% block evplatform_body %}
+    {% for message in app.session.flashbag.get('succes') %}
+        <div class="padding-bottom-5 alert alert-success">
+            <p>Massage flash : {{ message }}</p>
+        </div>
+    {% endfor %}
+
+    {% if advert.image is not null %}
+        {% if advert.image is not empty %}
+            <img src="{{ asset(advert.image.webPath) }}" alt="{{ advert.image.alt }}" class="img-thumbnails logo-advert">
+        {% endif %}
+    {% endif %}
+    <h3 class="text-center">
+        {{ advert.title }}
+    </h3>
+
+    <div class="text-right">
+        <i>Par {{ advert.user.username }}, le {{ advert.date|date('d/m/Y') }}</i>
+    </div>
+
+    <div class="padding-top-3">
+        <h5>Description du poste :</h5>
+        <p>{{ advert.description | raw }}</p>
+    </div>
+
+    <div class="padding-top-3">
+        <h5>Profil :</h5>
+        {% if advert.profile is not null %}
+            {% if advert.profile is not empty %}
+                <p>{{ advert.profile | raw }}</p>
+
+            {% endif %}
+        {% endif %}
+
+        <strong>Techonologies requises :</strong>
+        {% if listAdvertSkills is not null %}
+            {% if listAdvertSkills is not empty %}
+                <ul>
+                    {% for advertSkill in listAdvertSkills %}
+                        <li>{{ advertSkill.skill.name }} (niveau {{ advertSkill.level }})</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% if advert.details is not null %}
+        {% if advert.details is not empty %}
+            <div class="padding-top-3">
+                <h5>Détails :</h5>
+                <p>{{ advert.details | raw }}</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    {% if not advert.categories.empty %}
+        <div class="padding-top-3">
+            <div class="row">
+                {% for category in advert.categories %}
+                    <div class="col category">#{{ category.name }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+
+    <div class="row padding-top-3 padding-bottom-5">
+        {% if (is_granted('ROLE_COMPANY')) or (is_granted('ROLE_ADMIN')) or (is_granted('ROLE_SUPER_USER')) %}
+            <div class="col">
+                <a href="{{ path('ev_platform_dashboard') }}" class="btn btn-primary">
+                    <i class="fa fa-angle-left"></i>
+                    Retour à la liste
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ path('ev_platform_edit_advert', {'id': advert.id}) }}" class="btn btn-outline-primary">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Modifier l'annonce
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ path('ev_platform_delete_advert', {'id': advert.id}) }}" class="btn btn-danger">
+                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    Supprimer l'annonce
+                </a>
+            </div>
+        {% elseif is_granted('ROLE_CANDIDATE') %}
+            <div class="col">
+                <a href="{{ path('ev_platform_dashboard') }}" class="btn btn-primary">
+                    <i class="fa fa-angle-left"></i>
+                    Retour à la liste
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ path('ev_platform_apply', {'idadvert': advert.id}) }}" class="btn btn-success">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    Postuler
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if (is_granted('ROLE_COMPANY')) and (is_granted('ROLE_ADMIN')) %}
+        <div class="applications-zone">
+            <div class="row">
+                <h1>Liste des candidatures</h1>
+            </div>
+            <hr>
+
+            {% for application in listApplications %}
+                <div class="row applications">
+                    <div class="col-6"><strong>{{ application.first_name }} {{ application.last_name | upper }}</strong> a postulé le {{ application.date |date ('d-m-Y') }} à {{ application.date | date ('H:i', 'Europe/Paris') }}</div>
+                    <div class="col-3">
+                        -->
+                        <a href="{{ path('ev_platform_readApplication', {'idadvert': advert.id, 'id': application.id}) }}">Lire la candidature</a> <!-- CHEMIN A FAIRE !-->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock %}

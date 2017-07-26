@@ -1,0 +1,10 @@
+
+<ul class="nav flex-column">
+    {% for advert in listAdverts %}
+        <li class="nav-item">
+            <a href="{{ path('ev_platform_view_advert', {'id': advert.id}) }}" class="nav-link">
+                {{ advert.title }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

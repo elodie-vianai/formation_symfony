@@ -1,0 +1,72 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+
+{% block title %}
+    ELVI - Toutes mes annonces
+{% endblock %}
+
+
+{% block subtitle %}
+    {% if is_granted('ROLE_COMPANY') %}
+        <h1>Mes annonces en ligne</h1>
+    {% else %}
+        <h1>Les annonces en ligne</h1>
+    {% endif %}
+{% endblock %}
+
+
+{% block evplatform_body %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Titre</th>
+            {%  if is_granted('ROLE_CANDIDATE') %}
+                <th>Date de publication</th>
+                <th>Lire</th>
+            {% else %}
+                <th>Date d'édition</th>
+                <th>Nb réponses</th>
+                <th>Gestion</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for advert in listAdverts %}
+            <tr>
+                <td>AN{{ advert.date | date ('Ym') }}-{{ advert.id }}</td>
+                <td>
+                    <a href="{{ path ('ev_platform_view_advert', {'id': advert.id}) }}" class="text-underline-hover">{{ advert.title }}</a>
+                </td>
+                {%  if is_granted('ROLE_CANDIDATE') %}
+                    <td class="text-center">{{ advert.date | date ('d/m/Y') }}</td>
+                    <td>
+                        <a href="{{ path ('ev_platform_view_advert', {'id': advert.id}) }}" class="btn">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                {% else %}
+                    {% if advert.updated_at is defined %}
+                        <td class="text-center">{{ advert.updated_at | date ('d/m/Y') }}</td>
+                    {% else %}
+                        <td class="text-center">{{ advert.date | date ('d/m/Y') }}</td>
+                    {% endif %}
+                    <td class="text-center">{{ advert.nbApplications }}</td>
+                    <td>
+                        <a href="{{ path ('ev_platform_view_advert', {'id': advert.id}) }}" class="btn">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                        </a>
+                        <a href="{{ path ('ev_platform_edit_advert', {'id': advert.id}) }}" class="btn btn-primary">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                        <a href="{{ path ('ev_platform_delete_advert', {'id': advert.id}) }}" class="btn btn-danger">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

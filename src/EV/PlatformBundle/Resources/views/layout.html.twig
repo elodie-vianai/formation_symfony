@@ -1,0 +1,51 @@
+{% extends "EVCoreBundle::layout.html.twig" %}
+
+{% block title %}{{ parent() }} - Annonces{% endblock %}
+
+{#{% block stylesheets %}#}
+    {#<link rel="stylesheet" href="{{ asset('bootstrap-4.0.0-alpha.6/dist/css/bootstrap.css') }}">#}
+{#{% endblock %}#}
+
+{% block jumbotron %}
+    <h1 class="display-3">Ma plateforme d'annonces</h1>
+    <p class="lead">Retrouvez toute une collection d'annonces bidons !</p>
+{% endblock jumbotron %}
+
+{% block menu %}
+    <h3>Accueil</h3>
+    <ul class="nav flex-column">
+        <li class="nav-item"><a href="{{ path('ev_platform_dashboard') }}" class="nav-link">Accueil</a></li>
+        <li class="nav-item"><a href="{{ path('fos_user_profile_show') }}" class="nav-link">Mon profil</a></li>
+    </ul>
+    {%  if is_granted('ROLE_COMPANY') %}
+        <h3>Mes annonces</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="{{ path('ev_platform_add_advert') }}" class="nav-link">Ajouter une annonce</a></li>
+            <li class="nav-item"><a href="{{ path('ev_platform_list_all_adverts') }}" class="nav-link">Toutes mes annonces</a></li>
+        </ul>
+        <h3>Les candidatures</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="{{ path('ev_platform_list_all_applications') }}" class="nav-link">Mes candidatures reçues</a></li>
+        </ul>
+        {%  elseif is_granted('ROLE_CANDIDATE') %}
+            <h3>Gestion</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a href="{{ path('ev_platform_list_all_adverts') }}" class="nav-link">Toutes les annonces</a></li>
+                <li class="nav-item"><a href="{{ path('ev_platform_list_all_applications') }}" class="nav-link">Voir mes candidatures</a></li>
+            </ul>
+        {% endif %}
+
+    {% if is_granted('ROLE_CANDIDATE') %}
+        <h4>Dernières annonces</h4>
+        {{ render(controller("EVPlatformBundle:Dashboard:lastsAdverts_menu", {'limit':3, 'id':0})) }}
+    {% endif %}
+{% endblock menu %}
+
+{% block body %}
+    {% block subtitle %}{% endblock subtitle %}
+
+    <hr>
+
+    {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+    {% block evplatform_body %}{% endblock evplatform_body %}
+{% endblock body %}

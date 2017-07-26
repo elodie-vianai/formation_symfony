@@ -1,0 +1,28 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Supprimer une annonce
+{% endblock %}
+
+{% block evplatform_body %}
+
+    <h2>Modifier une annonce</h2>
+
+    <p>
+        Etes-vous certain de vouloir supprimer l'annonce "{{ advert.title }}" ?
+    </p>
+
+    {# On met l'id de l'annonce dans la route de l'action du formulaire #}
+    <form action="{{ path('ev_platform_delete_advert', {'id': advert.id}) }}" method="post">
+        <a href="{{ path('ev_platform_view-advert', {'id': advert.id}) }}" class="btn btn-primary">
+            <i class="fa fa-angle-left"></i>
+            Retour à l'annonce
+        </a>
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "EVPlatformBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Envoyer une candidature
+{% endblock %}
+
+    {% block subtitle %}<h1>Envoyer une candidature</h1>{% endblock subtitle %}
+
+{% block evplatform_body %}
+    <h2>Candidater pour l'annonce n°AN{{ advert.date | date ('Ym') }}-{{ advert.id }}</h2>
+
+    {{ include("EVPlatformBundle:Application:form.html.twig") }}
+
+    <p class="text-right">
+        <a href="{{ path('ev_platform_dashboard') }}" class="btn btn-primary">
+            Retour à l'accueil
+        </a>
+    </p>
+{% endblock %}

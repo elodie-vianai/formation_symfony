@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>{% block title %}ELVI{% endblock %}</title>
+
+        {% block stylesheets %}
+            {# On charge le CSS de bootstrap depuis le site directement #}
+            <link rel="stylesheet" href="{{ asset('bootstrap-4.0.0-alpha.6/dist/css/bootstrap.css') }}">
+            <link rel="stylesheet" href="{{ asset('font-awesome-4.7.0/css/font-awesome.min.css') }}">
+            {% stylesheets filter='cssrewrite, ?scssphp'
+                '@EVCoreBundle/Resources/public/css/*.css'
+                '@EVPlatformBundle/Resources/public/css/*.css' %}
+                <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+            {% endstylesheets %}
+        {% endblock stylesheets %}
+    </head>
+
+    <body>
+    <div class="container">
+        <div class="row">
+            {% block user %}
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <div class="col-7"></div>
+                    <div class="col-5 user-item">
+                        Connecté(e) en tant que <a href="{{ path('fos_user_profile_show') }}">{{ app.user.username }}</a>
+                        (<a href="{{ path('fos_user_security_logout') }}">déconnexion</a>)
+                    </div>
+                {% else %}
+                    <div class="col-8"></div>
+                    <div class="col-4">
+                        <ul class="user-anonym">
+                            <li class="user-anonym-item"><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                            <li class="user-anonym-item">/</li>
+                            <li class="user-anonym-item"><a href="{{ path('fos_user_registration_register') }}">Inscription</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endblock user %}
+        </div>
+        <div id="header" class="jumbotron">
+            {% block jumbotron %}
+                <h1 class="display-3">EL.VI.</h1>
+                <p class="lead">Ce projet est propulsé par Symfony et construit grâce au MOOC OpenClassrooms et SensioLabs <br> mais réalisé par EL.VI.</p>
+                <hr class="m-4">
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg"
+                       href="https://openclassrooms.com/courses/developpez-votre-site-web-avec-le-framework-symfony2">
+                        Participer au MOOC »
+                    </a>
+                </p>
+            {% endblock jumbotron %}
+        </div>
+
+        <div class="row">
+            <div id="menu" class="col-3">
+                {% block menu %}
+                    <h3>Naviguer dans le site</h3>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="{{ path('ev_core_homepage') }}" class="nav-link">Accueil général</a></li>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            <li class="nav-item"><a href="{{ path('fos_user_profile_show') }}" class="nav-link">Mon profil</a></li>
+                        {% endif %}
+                        <li class="nav-item"><a href="{{ path('ev_platform_dashboard') }}" class="nav-link">Plateforme d'annonces</a></li>
+                        <li class="nav-item"><a href="{{ path('ev_core_contact') }}" class="nav-link">Contact</a></li>
+                    </ul>
+
+                        <h4>What's new ?</h4>
+                        {{ render(controller("EVPlatformBundle:Dashboard:lastsAdverts_menu", {'limit':3})) }}
+                {% endblock menu %}
+            </div>
+            <div id="content" class="col-md-9">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+
+        <hr>
+
+        <footer>
+            <div>
+                <p>
+                    <a href="{{ path('ev_core_homepage') }}">Accueil général</a> |
+                    <a href="{{ path('ev_core_contact') }}">Contact</a>
+                </p>
+                <p class="text-center">Réalisé par ELVI selon le cours d'OpenClassroom © Juin {{ 'now'|date('Y') }}</p>
+            </div>
+        </footer>
+    </div>
+
+    {% block javascripts %}
+        {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+        <script src="{{ asset('jquery/jquery-3.2.1.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="//cdn.ckeditor.com/4.7.1/basic/ckeditor.js"></script>
+    {% endblock %}
+
+    </body>
+</html>

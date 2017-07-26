@@ -1,0 +1,18 @@
+{% if listAdverts > 0 %}
+    <ul>
+        {% for advert in listAdverts %}
+            <li>
+                <a href="{{ path('ev_platform_view_advert', {'id': advert.id}) }}">
+                    {{ advert.title }}
+                </a>
+                par {{ advert.user.username }},
+                le {{ advert.date|date('d/m/Y') }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+    <div role="alert">
+        Vous n'avez encore aucune annonce de publiée.
+    </div>
+{% endif %}

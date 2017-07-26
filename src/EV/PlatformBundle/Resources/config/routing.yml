@@ -1,0 +1,67 @@
+ev_platform_dashboard:
+    path: /advert
+    defaults:
+        _controller: EVPlatformBundle:Dashboard:index
+
+
+# ****************************** ADVERTS ************************************************************
+ev_platform_list_all_adverts:
+    path: /advert/all
+    defaults:
+        _controller: EVPlatformBundle:Advert:list
+
+ev_platform_view_advert:
+    path:     /advert/{id}
+    defaults: { _controller: EVPlatformBundle:Advert:view }
+    requirements:
+        id: \d*
+
+ev_platform_add_advert:
+    path:     /advert/add
+    defaults: { _controller: EVPlatformBundle:Advert:add }
+
+ev_platform_edit_advert:
+    path: /advert/edit/{id}
+    defaults:
+        _controller: EVPlatformBundle:Advert:edit
+    requirements:
+        id: \d+
+
+ev_platform_delete_advert:
+    path: /advert/delete/{id}
+    defaults:
+        _controller: EVPlatformBundle:Advert:delete
+    requirements:
+        id: \d+
+
+ev_platform_purge:
+    path: /advert/purge/{days}
+    defaults:
+        _controller: EVPlatformBundle:Advert:purge
+    requirements:
+        days: \d+
+
+
+# ****************************** APPLICATIONS ************************************************************
+ev_platform_list_all_applications:
+    path: /advert/application/all
+    defaults:
+        _controller: EVPlatformBundle:Application:list
+        page: 1
+    requirements:
+        page: \d*
+
+ev_platform_readApplication:
+    path: /advert/{idadvert}/application/{id}
+    defaults:
+        _controller: EVPlatformBundle:Application:view
+    requirements:
+        idadvert: \d+
+        id: \d+
+
+ev_platform_apply:
+    path:     /advert/{idadvert}/apply
+    defaults:
+        _controller: EVPlatformBundle:Application:apply
+    requirements:
+        idadvert: \d+

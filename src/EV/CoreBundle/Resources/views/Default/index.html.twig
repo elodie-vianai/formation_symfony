@@ -1,0 +1,28 @@
+{% extends "EVCoreBundle::layout.html.twig" %}
+
+
+{% block body %}
+
+        {% for message in app.session.flashbag.get('info') %}
+            <div class="alert alert-warning">
+                <p>Attention : {{ message }}</p>
+            </div>
+        {% endfor %}
+
+    <h2>Bienvenue !</h2>
+    <hr>
+    <p class="justify-content">
+    Bienvenue sur le site EL.VI ! Ceci est un site créée dans le cadre d'une formation Openclassroom pour apprendre
+    Symfony 3.
+    </p>
+    <p class="justify-content">
+        Sur ce site, j'utilise les technologies de base : HTML5, CSS3, PHP7, JavaScript (peut-être).
+        <br>
+        J'utilise aussi les librairies suivantes :
+        <ul>
+            <li>Symfony 3</li>
+            <li>Twig</li>
+            <li>Bootstrap</li>
+        </ul>
+    </p>
+{% endblock %}

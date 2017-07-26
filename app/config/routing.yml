@@ -1,0 +1,10 @@
+ev_platform:
+    resource: "@EVPlatformBundle/Resources/config/routing.yml"
+    prefix:   /platform
+
+# Routes du CoreBundle, sans préfixe
+ev_core:
+    resource: "@EVCoreBundle/Resources/config/routing.yml"
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
